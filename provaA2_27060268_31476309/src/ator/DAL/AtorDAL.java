@@ -13,92 +13,71 @@ import java.util.List;
  * @author carla && taui
  */
 public class AtorDAL extends ConexaoMySQL {
-    public void incluirAtor(AtorDTO ator) throws Exception
-    {
-        //Prepara a conexão com o MySQL
+    public void incluirAtor(AtorDTO ator) throws Exception {
+        // Prepara a conexão com o MySQL
         abrirBD();
         SQL = "INSERT INTO ator (atorNome, atorIdade) VALUES (?, ?)";
         ps = con.prepareStatement(SQL);
-        //Busca os valores da classe AtorDTO
+        // Busca os valores da classe AtorDTO
         ps.setString(1, ator.getAtorNome());
         ps.setInt(2, ator.getAtorIdade());
         ps.executeUpdate();
         fecharBD();
     }
-    public AtorDTO selecionarAtorPorID(Integer atorID)throws Exception
-    {
+
+    public AtorDTO selecionarAtorPorID(Integer atorID) throws Exception {
         abrirBD();
         SQL = "SELECT * FROM ator WHERE atorID = ?";
         ps = con.prepareStatement(SQL);
         ps.setInt(1, atorID);
         rs = ps.executeQuery();
-        AtorDTO cliente = new ClienteDTO();
-        if(rs.next())
-        {
-            cliente.setCliID(rs.getInt("cliID"));
-            cliente.setCliNome(rs.getString("cliNome"));
-            cliente.setCliDtInclusao(rs.getDate("cliDtInclusao").toLocalDate());
-            cliente.setCliEndereco(rs.getString("cliEndereco"));
-            cliente.setCliBairro(rs.getString("cliBairro"));
-            cliente.setCliEmail(rs.getString("cliEmail"));
-            cliente.setCliTel(rs.getString("cliTel"));
-            cliente.setCliCidade(rs.getString("cliCidade"));
-            cliente.setCliUF(rs.getString("cliUF"));
-            fecharBD();            
+        AtorDTO ator = new Ator();
+        if (rs.next()) {
+            ator.setAtorID(rs.getInt("atorID"));
+            ator.setAtorNome(rs.getString("atorNome"));
+            ator.setIdade(rs.getInt("atorIdade"));
+            fecharBD();
         }
         return cliente;
     }
-    //Método que vai selecionar todos os clientes no nosso Banco de Dados
-    //e ordenar por nome do cliente
-    public List selecionarListaClientes() throws Exception
-    {
+
+    // Método que vai selecionar todos os clientes no nosso Banco de Dados
+    // e ordenar por nome do cliente
+    public List listAtor() throws Exception {
         abrirBD();
-        SQL = "SELECT * FROM clientes ORDER BY cliNome";
+        SQL = "SELECT * FROM ator ORDER BY atorNome";
         ps = con.prepareStatement(SQL);
         rs = ps.executeQuery();
-        List listaClientes = new ArrayList();
-        while(rs.next())
-        {
-           ClienteDTO cliente = new ClienteDTO();
-           cliente.setCliID(rs.getInt("cliID"));
-           cliente.setCliNome(rs.getString("cliNome"));
-           cliente.setCliDtInclusao(rs.getDate("cliDtInclusao").toLocalDate());
-           cliente.setCliEndereco(rs.getString("cliEndereco"));
-           cliente.setCliBairro(rs.getString("cliBairro"));
-           cliente.setCliEmail(rs.getString("cliEmail"));
-           cliente.setCliTel(rs.getString("cliTel"));
-           cliente.setCliCidade(rs.getString("cliCidade"));
-           cliente.setCliUF(rs.getString("cliUF"));
-           listaClientes.add(cliente);         
+        List listaAtor = new ArrayList();
+        while (rs.next()) {
+            AtorDTO ator = new Ator();
+            ator.setAtorID(rs.getInt("atorID"));
+            ator.setAtorNome(rs.getString("atorNome"));
+            ator.setIdade(rs.getInt("atorIdade"));
+            listaAtor.add(ator);
         }
         fecharBD();
-        return listaClientes;
+        return listaAtor;
     }
-    //Método que vai fazer as alterações necessárias nos dados dos clientes
-    //selecionados por seu código no nosso Banco de Dados
-    public void alterarCliente(ClienteDTO cliente) throws Exception
-    {
-        abrirBD();         
-        SQL = "UPDATE clientes SET cliNome = ?, cliDtInclusao = ?, cliEndereco = ?, cliBairro = ?, cliEmail = ?, cliTel = ?, cliCidade = ?, cliUF = ? WHERE cliID = ?";
-        ps = con.prepareStatement(SQL);        
-        ps.setString(1, cliente.getCliNome());
-        ps.setDate(2,  java.sql.Date.valueOf(cliente.getCliDtInclusao()));     
-        ps.setString(3, cliente.getCliEndereco());
-        ps.setString(4, cliente.getCliBairro());
-        ps.setString(5, cliente.getCliEmail());
-        ps.setString(6, cliente.getCliTel());
-        ps.setString(7, cliente.getCliCidade());
-        ps.setString(8, cliente.getCliUF());
-        ps.setLong(9, cliente.getCliID());
+
+    // Método que vai fazer as alterações necessárias nos dados dos clientes
+    // selecionados por seu código no nosso Banco de Dados
+    public void alterarAtor(AtorDTO ator) throws Exception {
+        abrirBD();
+        SQL = "UPDATE ator SET atorNome = ?, atorIdade = ? WHERE cliID = ?";
+        ps = con.prepareStatement(SQL);
+        ps.setString(1, ator.getAtorNome());
+        ps.setInt(2, ator.getAtorIdade());
+        ps.setLong(3, ator.getAtorID());
         ps.execute();
         fecharBD();
     }
-    public void excluirCliente(Integer cliID) throws Exception
-    {
+
+    public void excluirAtor(Integer atorID) throws Exception {
         abrirBD();
-        SQL = "DELETE FROM clientes WHERE cliID = ?";
+        SQL = "DELETE FROM ator WHERE atorID = ?";
         ps = con.prepareStatement(SQL);
-        ps.setInt(1, cliID);
+        ps.setInt(1, atorID);
         ps.execute();
         fecharBD();
     }
