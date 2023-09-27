@@ -31,18 +31,18 @@ public class AtorDAL extends ConexaoMySQL {
         ps = con.prepareStatement(SQL);
         ps.setInt(1, atorID);
         rs = ps.executeQuery();
-        AtorDTO ator = new Ator();
+        AtorDTO ator = new AtorDTO();
         if (rs.next()) {
             ator.setAtorID(rs.getInt("atorID"));
             ator.setAtorNome(rs.getString("atorNome"));
-            ator.setIdade(rs.getInt("atorIdade"));
+            ator.setAtorIdade(rs.getInt("atorIdade"));
             fecharBD();
         }
-        return cliente;
+        return ator;
     }
 
-    // Método que vai selecionar todos os clientes no nosso Banco de Dados
-    // e ordenar por nome do cliente
+    // Método que vai selecionar todos os atores no nosso Banco de Dados
+    // e ordenar por nome do ator
     public List listAtor() throws Exception {
         abrirBD();
         SQL = "SELECT * FROM ator ORDER BY atorNome";
@@ -50,17 +50,17 @@ public class AtorDAL extends ConexaoMySQL {
         rs = ps.executeQuery();
         List listaAtor = new ArrayList();
         while (rs.next()) {
-            AtorDTO ator = new Ator();
+            AtorDTO ator = new AtorDTO();
             ator.setAtorID(rs.getInt("atorID"));
             ator.setAtorNome(rs.getString("atorNome"));
-            ator.setIdade(rs.getInt("atorIdade"));
+            ator.setAtorIdade(rs.getInt("atorIdade"));
             listaAtor.add(ator);
         }
         fecharBD();
         return listaAtor;
     }
 
-    // Método que vai fazer as alterações necessárias nos dados dos clientes
+    // Método que vai fazer as alterações necessárias nos dados dos atores
     // selecionados por seu código no nosso Banco de Dados
     public void alterarAtor(AtorDTO ator) throws Exception {
         abrirBD();
