@@ -9,11 +9,11 @@
 
 CREATE DATABASE IF NOT EXISTS ator_db;
 
-DROP TABLE IF EXISTS ator;
+USE ator_db;
 
-CREATE TABLE `ator` (
-  `atorID` int NOT NULL AUTO_INCREMENT,
-  `atorNome` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `atorIdade` int DEFAULT NULL,
-  PRIMARY KEY (`atorID`)
+CREATE TABLE IF NOT EXISTS `ator` (
+                                      `atorID` int NOT NULL AUTO_INCREMENT,
+                                      `atorNome` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
+                                      `atorIdade` int DEFAULT NULL,
+                                      PRIMARY KEY (`atorID`)
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
