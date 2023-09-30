@@ -64,7 +64,7 @@ public class AtorDAL extends ConexaoMySQL {
     // selecionados por seu código no nosso Banco de Dados
     public void alterarAtor(AtorDTO ator) throws Exception {
         abrirBD();
-        SQL = "UPDATE ator SET atorNome = ?, atorIdade = ? WHERE cliID = ?";
+        SQL = "UPDATE ator SET atorNome = ?, atorIdade = ? WHERE atorID = ?";
         ps = con.prepareStatement(SQL);
         ps.setString(1, ator.getAtorNome());
         ps.setInt(2, ator.getAtorIdade());
