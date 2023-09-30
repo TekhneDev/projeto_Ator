@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author carla
+ * @author carla && taui
  */
 public class frmClientes extends javax.swing.JFrame {
 
@@ -124,6 +124,11 @@ public class frmClientes extends javax.swing.JFrame {
 
         btnMostrarCliAtor.setMnemonic('M');
         btnMostrarCliAtor.setText("Mostrar Todos");
+        btnMostrarCliAtor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarCliAtorActionPerformed(evt);
+            }
+        });
 
         btnLimparCliAtor.setMnemonic('L');
         btnLimparCliAtor.setText("Limpar");
@@ -247,44 +252,36 @@ public class frmClientes extends javax.swing.JFrame {
             {
                 Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
             }
-            JOptionPane.showMessageDialog(null, "Cliente " + cliente.getCliNome() + " Alterado Com Sucesso !!!!");
+            JOptionPane.showMessageDialog(null, "Cliente " + ator.getAtorNome() + " Alterado Com Sucesso !!!!");
         }
 
     }//GEN-LAST:event_btnAlterarCliAtorActionPerformed
 
     private void btnExcluirCliAtorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirCliAtorActionPerformed
         //Verifica se os campos estão preenchidos    
-        if (((txtNomeCli.getText().isEmpty()) || (ftfDtInclusaoCli.getText().isEmpty()) || (txtEnderecoCli.getText().isEmpty())
-                || (txtBairroCli.getText().isEmpty()) || (ftfTelefoneCli.getText().isEmpty()) || (txtCidadeCli.getText().isEmpty())
-                || (txtUFCli.getText().isEmpty()) || (txtCodigoIDCli.getText().isEmpty()))) {
+        if (((txtCodigoIDCliAtor.getText().isEmpty()) || (txtNomeCliAtor.getText().isEmpty()) || (IdadeCliAtor.getText().isEmpty()))) {
             JOptionPane.showMessageDialog(null, "Verifique Se Tem Algum Campo Vazio !!!!");
-            txtCodigoIDCli.requestFocus();
+            txtCodigoIDCliAtor.requestFocus();
         }
         else
         {
             // instanciando a classe clientesDTO do pacote DTO e criando seu objeto cliente        
-            ClienteDTO cliente = new ClienteDTO();
-            cliente.setCliID(Long.parseLong(txtCodigoIDCli.getText()));
+            AtorDTO ator = new AtorDTO();
+            ator.setAtorID(Long.parseLong(txtCodigoIDCliAtor.getText()));
             Object[] opcoes = {"Sim", "Não"};
-            int contador = JOptionPane.showOptionDialog(null, "Deseja Excluir Este Cliente: " + txtNomeCli.getText() + "?",
+            int contador = JOptionPane.showOptionDialog(null, "Deseja Excluir Este Ator: " + txtNomeCliAtor.getText() + "?",
                     "Exclusão", JOptionPane.YES_OPTION, JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
             if (contador == JOptionPane.YES_OPTION) {
                 try
                 {
-                    ClienteDAL dal = new ClienteDAL();
-                    dal.excluirCliente(Integer.valueOf(txtCodigoIDCli.getText()));
-                    JOptionPane.showMessageDialog(null, "Cliente Excluído com Sucesso !!!!");
+                    AtorDAL dal = new AtorDAL();
+                    dal.excluirAtor(Integer.valueOf(txtCodigoIDCliAtor.getText()));
+                    JOptionPane.showMessageDialog(null, "Ator Excluído com Sucesso !!!!");
                     // apaga os dados preenchidos nos campos de texto abaixo
-                    txtCodigoIDCli.setText(null);
-                    txtNomeCli.setText("");
-                    ftfDtInclusaoCli.setText(null);
-                    txtEnderecoCli.setText("");
-                    txtBairroCli.setText("");
-                    txtEmailCli.setText("");
-                    ftfTelefoneCli.setText(null);
-                    txtCidadeCli.setText("");
-                    txtUFCli.setText("");
-                    txtCodigoIDCli.requestFocus();
+                    txtCodigoIDCliAtor.setText(null);
+                    txtNomeCliAtor.setText("");
+                    IdadeCliAtor.setText(null);
+                    txtCodigoIDCliAtor.requestFocus();
                 }
                 catch (Exception ex)
                 {
@@ -339,6 +336,48 @@ public class frmClientes extends javax.swing.JFrame {
         IdadeCliAtor.setText(null);
 
     }//GEN-LAST:event_btnIncluirCliAtorActionPerformed
+
+    private void btnMostrarCliAtorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarCliAtorActionPerformed
+        //Limpa todas as caixas de texto
+        txtCodigoIDCliAtor.setText("");
+        txtNomeCliAtor.setText("");
+        IdadeCliAtor.setText(null);
+        // instanciando a classe AtorDAL
+        AtorDAL ator = new AtorDAL();
+        //Cria a lista de todos os clientes dentro da tabela Clientes
+        List<AtorDTO> selecionaTodosAtor = new ArrayList<>();
+        try
+        {
+            //Chama o método selecionaTodosClientes da Classe ClientesDAL e preeche
+            //o mesmo com a lista de todos os clientes.
+            selecionaTodosAtor = ator.listAtor();
+        }
+        catch (Exception ex)
+        {
+            Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Prepara a tabela para receber os dados da busca(Lista)
+        DefaultTableModel tabm = (DefaultTableModel)dgvClientesAtor.getModel();
+        for(int contador = tabm.getRowCount()-1; contador >=0; contador--)
+        {
+            tabm.removeRow(contador);
+        }
+        int contador = 0;
+        for(AtorDTO atores : selecionaTodosAtor)
+        {
+            //Mostra as informações dentro da Tabela
+            tabm.addRow(new String[1]);
+            dgvClientesAtor.setValueAt(atores.getAtorID(), contador, 0);
+            dgvClientesAtor.setValueAt(atores.getAtorNome(),contador, 1);
+            dgvClientesAtor.setValueAt(atores.getAtorIdade(), contador, 2);     
+            contador++;
+        }
+        //Limpa o campo Código do Cliente
+        txtCodigoIDCliAtor.setText(null);
+        //Posiciona o cursor do mouse no campo Nome do cliente
+        txtNomeCliAtor.requestFocus();
+
+    }//GEN-LAST:event_btnMostrarCliAtorActionPerformed
 
     /**
      * @param args the command line arguments
