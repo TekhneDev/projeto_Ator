@@ -81,4 +81,6 @@ public class AtorDAL extends ConexaoMySQL {
         ps.execute();
         fecharBD();
     }
+
+  
 }

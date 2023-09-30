@@ -37,7 +37,7 @@ public class AtorDTO {
     public void setAtorIdade(int atorIdade) {
         this.atorIdade = atorIdade;
     }
-    
+
     
    
 }

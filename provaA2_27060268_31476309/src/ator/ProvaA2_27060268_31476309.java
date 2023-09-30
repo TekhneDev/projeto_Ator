@@ -4,9 +4,11 @@
  */
 package ator;
 
+import ator.UI.frmPrincipal;
+
 /**
  *
- * @author carla
+ * @author carla && taui
  */
 public class ProvaA2_27060268_31476309 {
 
@@ -14,7 +16,8 @@ public class ProvaA2_27060268_31476309 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        frmPrincipal formPrincipal = new frmPrincipal();
+        formPrincipal.setVisible(true);
     }
     
 }
