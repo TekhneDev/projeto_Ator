@@ -19,7 +19,7 @@ public class ConexaoMySQL {
     public PreparedStatement ps;
     public ResultSet rs;
     public String SQL;
-    public void abrirBD()throws Exception
+    public void abrirBD() throws Exception
     {
        Class.forName("com.mysql.cj.jdbc.Driver");
        String url = "jdbc:mysql://localhost:3306/provaa2";
