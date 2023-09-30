@@ -121,6 +121,11 @@ public class frmClientes extends javax.swing.JFrame {
 
         btnPesquisarCliAtorID.setMnemonic('P');
         btnPesquisarCliAtorID.setText("Pesquisar");
+        btnPesquisarCliAtorID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarCliAtorIDActionPerformed(evt);
+            }
+        });
 
         btnMostrarCliAtor.setMnemonic('M');
         btnMostrarCliAtor.setText("Mostrar Todos");
@@ -132,9 +137,19 @@ public class frmClientes extends javax.swing.JFrame {
 
         btnLimparCliAtor.setMnemonic('L');
         btnLimparCliAtor.setText("Limpar");
+        btnLimparCliAtor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparCliAtorActionPerformed(evt);
+            }
+        });
 
         btnSairCliAtor.setMnemonic('S');
         btnSairCliAtor.setText("Sair");
+        btnSairCliAtor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairCliAtorActionPerformed(evt);
+            }
+        });
 
         dgvClientesAtor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -378,6 +393,71 @@ public class frmClientes extends javax.swing.JFrame {
         txtNomeCliAtor.requestFocus();
 
     }//GEN-LAST:event_btnMostrarCliAtorActionPerformed
+
+    private void btnSairCliAtorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairCliAtorActionPerformed
+        // Fecha o formulário de clientes e volta para o formulário principal
+        dispose();
+    }//GEN-LAST:event_btnSairCliAtorActionPerformed
+
+    private void btnPesquisarCliAtorIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarCliAtorIDActionPerformed
+        //Verifica se o código do cliente está vazio
+        if ("".equals(txtCodigoIDCliAtor.getText()))
+        {
+            JOptionPane.showMessageDialog(null, "Código do Cliente não pode ser vazio, favor digite um código válido !!!!");
+            //Após a mensagem de erro, o foco do cursor vai ficar no campo Código do Cliente
+            txtCodigoIDCliAtor.requestFocus();
+        }
+        else
+        {
+            //Faz o tratamento de erro, para verificar se a tabela Clientes está vazia
+            try
+            {
+                // instanciando a classe ClienteDTO do pacote DTO e criando seu objeto cliente
+                AtorDTO ator = new AtorDTO();
+                // Instancia a classe ClientesDAL
+                AtorDAL dal = new AtorDAL();
+                
+                ator = dal.selecionarAtorPorID(Integer.valueOf(txtCodigoIDCliAtor.getText()));
+                //O botão Incluir vai ficar dsesabilitado
+                btnIncluirCliAtor.setEnabled(false);
+                //O botão Alterar vai ficar habilitado
+                btnAlterarCliAtor.setEnabled(true);
+                //O botão Excluir vai ficar habilitado
+                btnExcluirCliAtor.setEnabled(true);
+                //O botão Mostrar Todos vai ficar habilitado
+                btnMostrarCliAtor.setEnabled(true);
+                //Mostra os dados do Cliente pelo seu código
+                txtNomeCliAtor.setText(ator.getAtorNome());
+                IdadeCliAtor.setText(Integer.toString(ator.getAtorIdade()));
+               
+            }
+            catch(Exception ex)
+            {
+                JOptionPane.showMessageDialog(null, "Cliente Não Encontrado. Favor Tente Novamente !!!!");
+                txtCodigoIDCliAtor.setText(null);
+                txtCodigoIDCliAtor.requestFocus();
+            }
+        }
+
+    }//GEN-LAST:event_btnPesquisarCliAtorIDActionPerformed
+
+    private void btnLimparCliAtorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparCliAtorActionPerformed
+        //Limpa os campos do formulário e do grid ou tabela 
+        btnIncluirCliAtor.setEnabled(true);
+        btnAlterarCliAtor.setEnabled(false);
+        btnExcluirCliAtor.setEnabled(false);
+        btnMostrarCliAtor.setEnabled(true);
+        txtCodigoIDCliAtor.setText("");
+        txtNomeCliAtor.setText("");
+        IdadeCliAtor.setText(null);
+        txtNomeCliAtor.requestFocus();
+        DefaultTableModel tabm = (DefaultTableModel)dgvClientesAtor.getModel();
+        for (int contador = tabm.getRowCount() -1; contador >= 0; contador--)
+        {
+            tabm.removeRow(contador);
+        }
+
+    }//GEN-LAST:event_btnLimparCliAtorActionPerformed
 
     /**
      * @param args the command line arguments
